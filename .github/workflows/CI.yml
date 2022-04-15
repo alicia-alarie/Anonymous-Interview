@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on: [pull_request, push, workflow_dispatch] # Allows you to run this workflow manually from the Actions tab
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+    test:
+      runs-on: ${{ matrix.os }}
+      strategy:
+        fail-fast: true
+        matrix:
+          os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+          python-version: ["3.7", "3.8", "3.9"]
+
+      steps:
+        - name: Checkout source
+          uses: actions/checkout@v3
+
+        - name: Setup python
+          uses: actions/setup-python@v3
+          with:
+            python-version: ${{ matrix.python-version }}
+            architecture: x64
+
+        - name: Install
+          run: |
+            pip install -e .
+            pip install -r requirements_test.txt          
+
+        - name: Run tests
+          run: pytest
