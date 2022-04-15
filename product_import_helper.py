@@ -10,7 +10,8 @@ def remove_deleted(products):
     
     for product in products:
         if product['deleted'] == False:
-            non_deleted.append(product)
+            #non_deleted.append(product)
+            non_deleted=[]
             
     return non_deleted
 
